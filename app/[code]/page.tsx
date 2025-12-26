@@ -1,11 +1,11 @@
-interface PageProps {
-  params: Promise<{ code: string }>
-}
+import Image from "next/image";
 
-export default async function PublicProfilePage({ params }: PageProps) {
-  const { code } = await params
+type PageProps = {
+  params: { code: string };
+};
 
-  const perfil = {
+export default function PublicProfile({ params }: PageProps) {
+  const data = {
     nome: "João da Silva",
     idade: 42,
     cidade: "Belém",
@@ -13,23 +13,40 @@ export default async function PublicProfilePage({ params }: PageProps) {
     tipoSanguineo: "O+",
     comorbidades: "Hipertensão",
     medicamentos: "Losartana 50mg",
-    observacoes: "Alergia a dipirona"
-  }
+    observacoes: "Alergia à dipirona",
+  };
 
   return (
-    <main style={{ padding: 24, fontFamily: "Arial" }}>
-      <h1>Perfil Médico</h1>
+    <main className="container">
+      <header className="header">
+        <h1>Perfil Médico</h1>
+        <span className="badge">Emergência</span>
+      </header>
 
-      <p><strong>Nome:</strong> {perfil.nome}</p>
-      <p><strong>Idade:</strong> {perfil.idade} anos</p>
-      <p><strong>Localidade:</strong> {perfil.cidade} / {perfil.estado}</p>
-      <p><strong>Tipo sanguíneo:</strong> {perfil.tipoSanguineo}</p>
-      <p><strong>Comorbidades:</strong> {perfil.comorbidades}</p>
-      <p><strong>Medicamentos:</strong> {perfil.medicamentos}</p>
-      <p><strong>Observações:</strong> {perfil.observacoes}</p>
+      <section className="card destaque">
+        <h2>{data.nome}</h2>
+        <p className="idade">{data.idade} anos</p>
+        <p className="local">
+          {data.cidade} / {data.estado}
+        </p>
+        <div className="sangue">{data.tipoSanguineo}</div>
+      </section>
 
-      <hr />
-      <p><strong>Código:</strong> {code}</p>
+      <section className="card">
+        <h3>Condições Médicas</h3>
+        <p><strong>Comorbidades:</strong> {data.comorbidades}</p>
+        <p><strong>Medicamentos:</strong> {data.medicamentos}</p>
+      </section>
+
+      <section className="card alerta">
+        <h3>Observações Importantes</h3>
+        <p>{data.observacoes}</p>
+      </section>
+
+      <footer className="footer">
+        <p>Código QR: {params.code}</p>
+        <small>Informações fornecidas pelo paciente</small>
+      </footer>
     </main>
-  )
+  );
 }
