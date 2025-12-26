@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 type PageProps = {
   params: { code: string };
 };
@@ -14,8 +12,6 @@ export default function PublicProfile({ params }: PageProps) {
     comorbidades: "Hipertensão",
     medicamentos: "Losartana 50mg",
     observacoes: "Alergia à dipirona",
-
-    // OPCIONAIS
     foto: "/foto-paciente.jpg",
     documentos: [
       { nome: "Laudo Médico", url: "/documento.pdf" },
@@ -23,95 +19,103 @@ export default function PublicProfile({ params }: PageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex justify-center">
-      <div className="w-full max-w-md p-4 space-y-4">
+    <main style={{
+      minHeight: "100vh",
+      background: "#f5f6f8",
+      display: "flex",
+      justifyContent: "center",
+      padding: 16
+    }}>
+      <div style={{ width: "100%", maxWidth: 420 }}>
 
         {/* HEADER */}
-        <header className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logo.png"
-              alt="QRMedy"
-              width={32}
-              height={32}
-            />
-            <strong className="text-lg">QRMEDY</strong>
+        <header style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 16
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <img src="/logo.png" width={32} />
+            <strong>QRMEDY</strong>
           </div>
-          <span className="bg-red-600 text-white text-xs px-3 py-1 rounded-full">
+          <span style={{
+            background: "#e53935",
+            color: "#fff",
+            padding: "4px 12px",
+            borderRadius: 20,
+            fontSize: 12
+          }}>
             Emergência
           </span>
         </header>
 
         {/* PERFIL */}
-        <section className="bg-white rounded-xl shadow p-4 text-center">
-          {data.foto && (
-            <div className="flex justify-center mb-2">
-              <Image
-                src={data.foto}
-                alt={data.nome}
-                width={100}
-                height={100}
-                className="rounded-full object-cover"
-              />
-            </div>
-          )}
+        <section style={cardStyle}>
+          <img
+            src={data.foto}
+            alt={data.nome}
+            style={{
+              width: 96,
+              height: 96,
+              borderRadius: "50%",
+              objectFit: "cover",
+              marginBottom: 8
+            }}
+          />
 
-          <h2 className="text-xl font-semibold">{data.nome}</h2>
-          <p className="text-gray-500">{data.idade} anos</p>
-          <p className="text-gray-500">
-            {data.cidade} / {data.estado}
-          </p>
+          <h2>{data.nome}</h2>
+          <p>{data.idade} anos</p>
+          <p>{data.cidade} / {data.estado}</p>
 
-          <div className="mt-3 inline-block bg-red-600 text-white px-4 py-1 rounded-full font-bold">
-            {data.tipoSanguineo}
-          </div>
+          <div style={bloodStyle}>{data.tipoSanguineo}</div>
         </section>
 
-        {/* CONDIÇÕES MÉDICAS */}
-        <section className="bg-white rounded-xl shadow p-4">
-          <h3 className="font-semibold mb-2">Condições Médicas</h3>
-          <p>
-            <strong>Comorbidades:</strong> {data.comorbidades}
-          </p>
-          <p>
-            <strong>Medicamentos:</strong> {data.medicamentos}
-          </p>
+        {/* CONDIÇÕES */}
+        <section style={cardStyle}>
+          <h3>Condições Médicas</h3>
+          <p><strong>Comorbidades:</strong> {data.comorbidades}</p>
+          <p><strong>Medicamentos:</strong> {data.medicamentos}</p>
         </section>
 
         {/* OBSERVAÇÕES */}
-        <section className="bg-white rounded-xl shadow p-4 border-l-4 border-orange-500">
-          <h3 className="font-semibold mb-2">Observações Importantes</h3>
+        <section style={{ ...cardStyle, borderLeft: "4px solid #fb8c00" }}>
+          <h3>Observações Importantes</h3>
           <p>{data.observacoes}</p>
         </section>
 
         {/* DOCUMENTOS */}
-        {data.documentos.length > 0 && (
-          <section className="bg-white rounded-xl shadow p-4">
-            <h3 className="font-semibold mb-2">Documentos Anexados</h3>
-            <ul className="space-y-1">
-              {data.documentos.map((doc, index) => (
-                <li key={index}>
-                  📄{" "}
-                  <a
-                    href={doc.url}
-                    target="_blank"
-                    className="text-blue-600 underline"
-                  >
-                    {doc.nome}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <section style={cardStyle}>
+          <h3>Documentos Anexados</h3>
+          <a href="/documento.pdf" target="_blank">
+            📄 Laudo Médico
+          </a>
+        </section>
 
-        {/* FOOTER */}
-        <footer className="text-center text-xs text-gray-400 pt-2">
+        <footer style={{ textAlign: "center", fontSize: 12, opacity: 0.6 }}>
           <p>Código QR: {params.code}</p>
           <p>Informações fornecidas pelo paciente</p>
         </footer>
-
       </div>
     </main>
   );
 }
+
+const cardStyle = {
+  background: "#fff",
+  borderRadius: 12,
+  padding: 16,
+  marginBottom: 12,
+  boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+  textAlign: "center" as const
+};
+
+const bloodStyle = {
+  marginTop: 8,
+  display: "inline-block",
+  background: "#e53935",
+  color: "#fff",
+  padding: "6px 16px",
+  borderRadius: 20,
+  fontWeight: "bold"
+};
