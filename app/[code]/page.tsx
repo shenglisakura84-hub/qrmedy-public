@@ -12,7 +12,7 @@ export default function PublicProfile({ params }: PageProps) {
     comorbidades: "Hipertensão",
     medicamentos: "Losartana 50mg",
     observacoes: "Alergia à dipirona",
-    foto: "/foto-paciente.jpg",
+    foto: "/foto.jpg",
     documentos: [
       { nome: "Laudo Médico", url: "/documento.pdf" },
     ],
